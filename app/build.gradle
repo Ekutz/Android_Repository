@@ -32,6 +32,10 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     // 출시 환경에 맞추어 서로 다른 예약어로 여러 버전의 apk를 만든다
     buildTypes {
         release {
