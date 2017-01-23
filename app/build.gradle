@@ -1,0 +1,78 @@
+// 모듈의 용도 : 어플리케이션, 라이브러리 등등
+apply plugin: 'com.android.application'
+
+// 안드로이드 앱 관련 설정
+android {
+    // 컴파일러 버전
+    compileSdkVersion 25
+
+    // 빌드 툴 버전
+    buildToolsVersion "25.0.1"
+    defaultConfig {
+        // 어플리케이션 고유 아이디 (default : 어플리케이션 root package 명을 사용
+        applicationId "com.jspark.android.test1"
+        minSdkVersion 15
+        targetSdkVersion 25
+        // 내부적으로 관리되는 어플리케이션 버전
+        versionCode 1
+
+        // 외부적으로 알려지는 어플리케이션 버전
+        versionName "1.0"
+
+        // 테스트 환경
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../keyStore/keystore.jks")
+            storePassword "001342"
+            keyAlias "wistnsos"
+            keyPassword "001342"
+        }
+    }
+
+    // 출시 환경에 맞추어 서로 다른 예약어로 여러 버전의 apk를 만든다
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            buildConfigField("String", "MYURL", "\"배포용 버전\"");
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField("String", "MYURL", "\"개발용 버전\"");
+        }
+    }
+
+    productFlavors {
+        google {
+            versionName "1.0-google"
+        }
+
+        onestore {
+            versionName "1.0-onestore"
+        }
+
+        samsung {
+            versionName "1.0-samsung"
+        }
+    }
+}
+
+// 라이브러리
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // 화면 테스트용 라이브러리
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    // 하위 버전 호환성 라이브러리
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    // 테스트용 라이브러리
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+}
+
